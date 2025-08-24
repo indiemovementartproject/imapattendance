@@ -151,7 +151,10 @@
       .controls label select, .controls label input { width: 100%; }
       .sync-bar input[type="text"], .sync-bar input[type="password"] { width: 100%; max-width: 280px; }
       .branch-buttons .btn { width: min(280px, 90vw); }
-      tfoot td.tf-lbl { display:none; } /* hide label cell on small screens */
+      @media (max-width: 768px) {
+  tfoot td.tf-lbl { visibility: hidden; } /* keeps column count intact */
+}
+ /* hide label cell on small screens */
     }
 
     #overview .grid { justify-items: center; }
