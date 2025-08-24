@@ -1,0 +1,826 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="utf-8" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;iMAP Attendance Sheet&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>:root {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--bg: #0b0f14;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--card: #10161d;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--border: #1f2a36;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--muted: #0f1a24;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--text: #f5f7fa;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--subtle: #c9d4e1;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--accent: #7cc4ff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--danger:#ef4444;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--okbg: #0b3d2e;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--okfg:#d1fae5;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--okbd:#14532d;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>--col-student: 220px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--col-phone: 160px;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>--ctl-fs: 13px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--ctl-py: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--ctl-px: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--btn-sm-px: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>--btn-sm-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>* { box-sizing: border-box; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>body { font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; background: var(--bg); color: var(--text); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>header { padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--card); position: sticky; top: 0; z-index: 10; display: flex; justify-content: center; align-items: center; text-align: center; gap:10px; flex-wrap: wrap; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>h1 { margin: 0; font-size: 20px; font-weight: 600; color: var(--text); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.branch-tag { font-size: 12px; color: var(--subtle); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.logo { display:none; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.wrap { padding: 16px 20px; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.topbar { display:none; justify-content:flex-start; align-items:center; margin: 6px 0 8px; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.topbar.show { display:flex; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.btn--back { padding: 2px 6px; font-size: 10px; border-radius: 8px; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; overflow-x: auto; -webkit-overflow-scrolling: touch; justify-content: center; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.tab-btn { appearance: none; border: 1px solid var(--border); background: var(--card); color: var(--subtle); padding: 8px 12px; border-radius: 12px; cursor: pointer; font-family: inherit; font-weight: 500; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.tab-btn:hover { border-color: var(--accent); color: var(--text); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.tab-btn.active { background: var(--accent); color: #00131f; border-color: var(--accent); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.panel { display: none; background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 12px; overflow-x: auto; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.panel.active { display: block; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>table { border-collapse: collapse; margin: 8px auto; background: var(--card); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>th, td { border: 1px solid var(--border); padding: 6px; text-align: center; font-size: 13px; vertical-align: top; color: var(--text); white-space: nowrap; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>thead th { background: #0f1a24; font-weight: 600; position: sticky; top: 0; z-index: 3; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>thead tr.day-row th { background: #0b141b; font-weight: 500; font-size: 11px; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>tfoot td { background: #0f1a24; font-weight: 600; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>tfoot td[id^="classTotal-"], tfoot td.tf-fees { background: var(--okbg); color: var(--okfg); font-weight: 700; border-color: var(--okbd); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>#overviewTables td[id^="fees-Total-"] { background: var(--okbg); color: var(--okfg); font-weight: 700; border-color: var(--okbd); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>tbody tr:nth-child(even) td { background: #0e1622; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>tbody tr:hover td { background: #132238; transition: background .15s ease; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>table.collapsed .day-col { display: none; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>table[id^="classTable-"] th:first-child,</p>
+<p class="p1"><span class="Apple-converted-space">    </span>table[id^="classTable-"] td:first-child { width: var(--col-student); text-align: center; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>table[id^="classTable-"] th:nth-child(2),</p>
+<p class="p1"><span class="Apple-converted-space">    </span>table[id^="classTable-"] td:nth-child(2) { width: var(--col-phone); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>#overviewTables table { table-layout: auto; margin: 8px auto; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>#overviewTables table th, #overviewTables table td { width: auto; padding: 5px; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; color: var(--subtle); justify-content: center; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.controls label { font-size: 12px; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>select, input[type="text"], input[type="password"] {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: var(--ctl-py) var(--ctl-px);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-family: inherit;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: var(--ctl-fs);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #0b141b;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>select:focus, input[type="text"]:focus, input[type="password"]:focus { outline: 2px solid var(--accent); outline-offset: 0; border-color: var(--accent); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>input[type="text"], input[type="password"] { width: 100%; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>input.notes { width: auto !important; min-width: 160px; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.phone.invalid { border-color: var(--danger); box-shadow: 0 0 0 2px rgba(239,68,68,.15); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.grid { display: grid; gap: 12px; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.month-title { margin: 8px 0 2px; font-size: 14px; font-weight: 600; color: var(--accent); text-align: center; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.hidden { display: none !important; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.branch-gate { text-align:center; margin: 10px 0 14px; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.branch-buttons { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.btn {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border:1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: var(--card);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 14px 20px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-family: inherit;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.btn:hover { border-color: var(--accent); color: var(--text); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.btn.primary { background: var(--accent); color:#00131f; border-color: var(--accent); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>body.compact th, body.compact td { padding: 3px; font-size: 12px; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>body.compact .tab-btn { padding:6px 8px; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>@media print {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>:root { --bg:#fff; --card:#fff; --border:#000; --text:#000; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>body { background:#fff; color:#000; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>header { position: static; background:#fff; border:none; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.topbar, .tabs, .sync-bar, #branchGate, .controls label input, .controls label select, label input[type="checkbox"] { display:none !important; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>table { margin: 0 auto; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>th, td { color:#000; border-color:#000; background:#fff !important; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tfoot td[id^="classTotal-"] { background:#d9f2e6 !important; color:#000 !important; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>@page { size: A4 portrait; margin: 12mm; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.logo { display:block !important; max-height: 36px; margin-right: 8px; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>td select { width: 100%; min-width: 80px; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>td input.fee { text-align: right; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.sync-bar { display:flex; gap:8px; align-items:center; margin: 6px 0; flex-wrap: wrap; justify-content: center; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.sync-bar .btn {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight:600;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: var(--ctl-py) var(--btn-sm-px);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: var(--ctl-fs);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: var(--btn-sm-radius);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.sync-bar input[type="text"], .sync-bar input[type="password"] { width: 220px; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.sync-bar .status { font-size: 12px; color: var(--subtle); min-width: 160px; text-align: center; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>@media (max-width: 768px) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.wrap { padding: 12px; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>h1 { font-size: 18px; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.tabs { flex-wrap: nowrap; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.tab-btn { padding: 8px 10px; font-size: 12px; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>th, td { padding: 4px; font-size: 12px; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>td select { min-width: 64px; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.controls { flex-direction: column; align-items: center; gap: 8px; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.controls label select, .controls label input { width: 100%; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.sync-bar input[type="text"], .sync-bar input[type="password"] { width: 100%; max-width: 280px; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.branch-buttons .btn { width: min(280px, 90vw); }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tfoot td.tf-lbl { display:none; } /* hide label cell on small screens */</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>#overview .grid { justify-items: center; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;header&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;img id="logo" class="logo" src="" alt="Logo" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h1&gt;iMAP Attendance Sheet &lt;span id="branchTag" class="branch-tag"&gt;&lt;/span&gt;&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="wrap"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="branchGate" class="branch-gate"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;h2 style="margin:8px 0 4px; font-weight:600; color:var(--text); font-size:16px;"&gt;Select Branch&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="branch-buttons"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="btn" data-branch="Seawoods"&gt;Seawoods&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="btn" data-branch="Belapur"&gt;Belapur&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="topbar" class="topbar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="backBtn" class="btn btn--back"&gt;← Back to branches&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="tabs hidden"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="sync-bar hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;input id="ghToken" type="password" placeholder="GitHub Token (gist scope)" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;input id="gistId" type="text" placeholder="Gist ID (leave blank to create)" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;input id="gistFilename" type="text" placeholder="Filename" value="imap-attendance.json" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label style="font-size:12px;color:var(--subtle)"&gt;&lt;input id="autoSync" type="checkbox" style="vertical-align:middle;margin-right:6px;"/&gt;Auto Sync&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label style="font-size:12px;color:var(--subtle)"&gt;&lt;input id="compactToggle" type="checkbox" style="vertical-align:middle;margin-right:6px;"/&gt;Compact&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="pullBtn" class="btn"&gt;Pull&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="pushBtn" class="btn"&gt;Push&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span id="syncStatus" class="status"&gt;&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="panels" class="hidden"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>'use strict';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>(function(){</p>
+<p class="p1"><span class="Apple-converted-space">    </span>(function(){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!Element.prototype.matches) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!Element.prototype.closest) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Element.prototype.closest = function(s) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var el = this;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if (!document.documentElement.contains(el)) return null;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>do { if (el.matches(s)) return el; el = el.parentElement || el.parentNode; }</p>
+<p class="p1"><span class="Apple-converted-space">          </span>while (el &amp;&amp; el.nodeType === 1);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>return null;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>})();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function forEachNode(list, fn){ Array.prototype.forEach.call(list, fn); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function idSafe(s){ return String(s).replace(/\s+/g,'_'); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function ensure(obj, key, def){ if(!obj[key]) obj[key]=def; return obj[key]; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function sanitizeNumber(raw){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(typeof raw !== 'string') raw = String(raw || '');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var m = raw.replace(/,/g,'').match(/\d+(?:\.\d+)?/);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return m ? parseFloat(m[0]) : 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>var _measureSpan = null;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function getMeasureSpan(){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(_measureSpan) return _measureSpan;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var span = document.createElement('span');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>span.style.position = 'absolute';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>span.style.visibility = 'hidden';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>span.style.whiteSpace = 'pre';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>span.style.top = '-9999px';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>span.style.left = '-9999px';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.body.appendChild(span);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>_measureSpan = span;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return span;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function autosizeInput(input){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var span = getMeasureSpan();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var cs = window.getComputedStyle(input);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>span.style.fontFamily = cs.fontFamily;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>span.style.fontSize = cs.fontSize;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>span.style.fontWeight = cs.fontWeight;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>span.style.letterSpacing = cs.letterSpacing;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>span.textContent = input.value || input.placeholder || '';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var extra = 24;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>input.style.width = (span.offsetWidth + extra) + 'px';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function bindAutosize(input){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>autosizeInput(input);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>input.addEventListener('input', function(){ autosizeInput(input); });</p>
+<p class="p1"><span class="Apple-converted-space">      </span>input.addEventListener('change', function(){ autosizeInput(input); });</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function autosizeAllNotes(container){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>forEachNode(container.querySelectorAll('input.notes'), bindAutosize);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>var months = ["August 2025","September 2025","October 2025","November 2025","December 2025"];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>var classLabels = {};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>var BRANCHES = {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>Seawoods: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>labels: { JazzTraining: "Jazz Training", JazzFunk: "Jazz Funk", BollywoodWeekends: "Bollywood Weekends", BalletTraining: "Ballet Training" },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>configs: { JazzTraining:{allowedDays:[6]}, JazzFunk:{allowedDays:[0]}, BollywoodWeekends:{allowedDays:[6,0]}, BalletTraining:{allowedDays:[6]} },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>order: ["JazzTraining","JazzFunk","BollywoodWeekends","BalletTraining"]</p>
+<p class="p1"><span class="Apple-converted-space">      </span>},</p>
+<p class="p1"><span class="Apple-converted-space">      </span>Belapur: {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>labels: { JazzFunk: "Jazz Funk", BollywoodWeekdays: "Bollywood Weekdays", Juniors: "Juniors batch", OpenStyle: "Open Style" },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>configs: { JazzFunk:{allowedDays:[1,5]}, BollywoodWeekdays:{allowedDays:[2,4]}, Juniors:{allowedDays:[2,4]}, OpenStyle:{allowedDays:[2,4]} },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>order: ["JazzFunk","BollywoodWeekdays","Juniors","OpenStyle"]</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>var CLASS_CONFIGS = {};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>var CURRENT_BRANCH = null;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>var STORAGE_KEY = 'imap-attendance-v1';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function loadStore(){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var raw = localStorage.getItem(STORAGE_KEY);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var parsed = raw ? JSON.parse(raw) : null;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(parsed &amp;&amp; typeof parsed === 'object') return parsed;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} catch(e){ console.error('Store load failed', e); }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return {version:1, selectedMonths:{}, data:{}, meta:{updatedAt:0}};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>var STORE = loadStore();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function persist(){ try { localStorage.setItem(STORAGE_KEY, JSON.stringify(STORE)); } catch(e){ console.error('Store save failed', e); } }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function getBranchData(){ ensure(STORE,'data',{}); if(!CURRENT_BRANCH) return {}; ensure(STORE.data,CURRENT_BRANCH,{}); return STORE.data[CURRENT_BRANCH]; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function getBranchSelectedMonths(){ ensure(STORE,'selectedMonths',{}); if(!CURRENT_BRANCH) return {}; ensure(STORE.selectedMonths,CURRENT_BRANCH,{}); return STORE.selectedMonths[CURRENT_BRANCH]; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function getCollapsePrefs(){ ensure(STORE,'meta',{}); ensure(STORE.meta,'collapse',{}); if(!CURRENT_BRANCH) return {}; ensure(STORE.meta.collapse,CURRENT_BRANCH,{}); return STORE.meta.collapse[CURRENT_BRANCH]; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function bumpMeta(){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ensure(STORE,'meta',{});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ensure(STORE.meta,'deviceId','');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>STORE.meta.updatedAt = Date.now();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (!STORE.meta.deviceId) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>STORE.meta.deviceId = (crypto &amp;&amp; crypto.randomUUID) ? crypto.randomUUID() : Math.random().toString(36).slice(2);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} catch(e){ STORE.meta.deviceId = Math.random().toString(36).slice(2); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>var SYNC_KEY = 'imap-sync-settings';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function loadSyncSettings(){ try { return JSON.parse(localStorage.getItem(SYNC_KEY)) || {}; } catch (e) { return {}; } }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function saveSyncSettings(obj){ localStorage.setItem(SYNC_KEY, JSON.stringify(obj)); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function setStatus(msg, isError){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var elStatus = document.getElementById('syncStatus');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>elStatus.textContent = msg || '';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>elStatus.style.color = isError ? '#ef9a9a' : 'var(--subtle)';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function api(path, opts){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>opts = opts || {};</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var s = loadSyncSettings();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var token = s.token ? s.token.trim() : '';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(!token) return Promise.reject(new Error('Add your GitHub token'));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var merged = { method: 'GET', headers: { 'Accept': 'application/vnd.github+json', 'Authorization': 'Bearer ' + token } };</p>
+<p class="p1"><span class="Apple-converted-space">      </span>for (var k in opts){ merged[k]=opts[k]; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return fetch('https://api.github.com' + path, merged).then(function(res){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(!res.ok){ return res.text().then(function(t){ throw new Error('GitHub API ' + res.status + ': ' + t); }); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return res.json();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function gistPushUpdate(gistId, filename, content){ return api('/gists/'+gistId, { method:'PATCH', body: JSON.stringify({ files: { [filename]: { content: content } } }) }); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function gistCreate(filename, content){ return api('/gists', { method:'POST', body: JSON.stringify({ description:'iMAP Attendance Sheet data', public:false, files:{ [filename]: { content: content } } }) }); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function gistGet(gistId){ return api('/gists/'+gistId); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>var dirtySince = 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function payload(){ return JSON.stringify(STORE, null, 2); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function pushNow(force){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var s = loadSyncSettings();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var filename = (s.filename || 'imap-attendance.json').trim();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(!(s.token &amp;&amp; s.token.trim())) return Promise.reject(new Error('Add your GitHub token'));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>bumpMeta(); persist();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var body = payload();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(s.gistId){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return gistPushUpdate(s.gistId, filename, body).then(function(){ setStatus('Pushed to Gist'); dirtySince=0; });</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return gistCreate(filename, body).then(function(created){</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var s2 = loadSyncSettings(); s2.gistId = created.id; saveSyncSettings(s2); document.getElementById('gistId').value = s2.gistId;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>setStatus('Created new Gist and pushed'); dirtySince=0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function pullNow(){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var s = loadSyncSettings();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(!(s.token &amp;&amp; s.token.trim())) return Promise.reject(new Error('Add your GitHub token'));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(!(s.gistId &amp;&amp; s.gistId.trim())) return Promise.reject(new Error('Add a Gist ID (or Push to create one)'));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var filename = (s.filename || 'imap-attendance.json').trim();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return gistGet(s.gistId).then(function(g){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var file = g.files &amp;&amp; g.files[filename];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(!file) throw new Error('File not found in gist: ' + filename);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var textPromise = Promise.resolve(file.content);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(file.truncated || !file.content){</p>
+<p class="p1"><span class="Apple-converted-space">          </span>textPromise = fetch(file.raw_url).then(function(r){ if(!r.ok) throw new Error('Failed to fetch gist raw'); return r.text(); });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return textPromise.then(function(text){</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var incoming = JSON.parse(text);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var remoteTs = (incoming.meta &amp;&amp; incoming.meta.updatedAt) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var localTs = (STORE.meta &amp;&amp; STORE.meta.updatedAt) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if(remoteTs &lt;= localTs &amp;&amp; !dirtySince){ setStatus('Already up to date'); return; }</p>
+<p class="p1"><span class="Apple-converted-space">          </span>STORE = incoming; persist(); applyStoreToUI(); setStatus('Pulled from Gist'); dirtySince = 0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function smartSync(){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>try{</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var s = loadSyncSettings();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(!s.auto) return;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(!(s.token &amp;&amp; s.filename)) return;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(!(s.gistId)){ pushNow(true).catch(function(e){ setStatus('Auto push error: '+e.message,true); }); return; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>gistGet(s.gistId).then(function(g){</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var filename = (s.filename || 'imap-attendance.json').trim();</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var file = g.files &amp;&amp; g.files[filename];</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var textPromise = Promise.resolve(file &amp;&amp; file.content);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if(file &amp;&amp; (file.truncated || !file.content)){</p>
+<p class="p1"><span class="Apple-converted-space">            </span>textPromise = fetch(file.raw_url).then(function(r){ if(!r.ok) throw new Error('Failed to fetch gist raw'); return r.text(); });</p>
+<p class="p1"><span class="Apple-converted-space">          </span>}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>return textPromise.then(function(text){</p>
+<p class="p1"><span class="Apple-converted-space">            </span>var incoming = text ? JSON.parse(text) : null;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>var remoteTs = incoming &amp;&amp; incoming.meta ? (incoming.meta.updatedAt||0) : 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>var localTs = STORE &amp;&amp; STORE.meta ? (STORE.meta.updatedAt||0) : 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if(remoteTs &gt; localTs &amp;&amp; (!dirtySince || remoteTs &gt; dirtySince)){</p>
+<p class="p1"><span class="Apple-converted-space">              </span>STORE = incoming; persist(); applyStoreToUI(); setStatus('Auto: pulled'); dirtySince = 0; return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if(localTs &gt; remoteTs){</p>
+<p class="p1"><span class="Apple-converted-space">              </span>pushNow(true).then(function(){ setStatus('Auto: pushed'); }).catch(function(e){ setStatus('Auto push error: '+e.message,true); });</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}).catch(function(e){ setStatus('Auto sync error: '+e.message,true); });</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} catch(e){ setStatus('Auto sync error: '+e.message, true); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>var autoTimer = null;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function setupAutoSync(){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(autoTimer){ clearInterval(autoTimer); autoTimer=null; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var s = loadSyncSettings();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(s.auto){ autoTimer=setInterval(smartSync, 30000); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function bindSyncUI(){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var s = loadSyncSettings();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var elToken = document.getElementById('ghToken');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var elGistId = document.getElementById('gistId');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var elFilename = document.getElementById('gistFilename');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var elAuto = document.getElementById('autoSync');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var elCompact = document.getElementById('compactToggle');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>elToken.value = s.token || '';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>elGistId.value = s.gistId || '';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>elFilename.value = s.filename || 'imap-attendance.json';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>elAuto.checked = !!s.auto;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (elCompact) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var compact = STORE &amp;&amp; STORE.meta ? !!STORE.meta.compact : false;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.body.classList.toggle('compact', compact);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>elCompact.checked = compact;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>elCompact.addEventListener('change', function(){</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if(!STORE.meta) STORE.meta = {};</p>
+<p class="p1"><span class="Apple-converted-space">          </span>STORE.meta.compact = elCompact.checked; persist();</p>
+<p class="p1"><span class="Apple-converted-space">          </span>document.body.classList.toggle('compact', elCompact.checked);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>elToken.addEventListener('input', function(){ var s=loadSyncSettings(); s.token = elToken.value.trim(); saveSyncSettings(s); });</p>
+<p class="p1"><span class="Apple-converted-space">      </span>elGistId.addEventListener('input', function(){ var s=loadSyncSettings(); s.gistId = elGistId.value.trim(); saveSyncSettings(s); });</p>
+<p class="p1"><span class="Apple-converted-space">      </span>elFilename.addEventListener('input', function(){ var s=loadSyncSettings(); s.filename = elFilename.value.trim() || 'imap-attendance.json'; saveSyncSettings(s); });</p>
+<p class="p1"><span class="Apple-converted-space">      </span>elAuto.addEventListener('change', function(){ var s=loadSyncSettings(); s.auto = elAuto.checked; saveSyncSettings(s); setupAutoSync(); });</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('pullBtn').addEventListener('click', function(){ pullNow().catch(function(err){ setStatus(err.message, true); }); });</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('pushBtn').addEventListener('click', function(){ pushNow(true).catch(function(err){ setStatus(err.message, true); }); });</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function buildOverviewTables(){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var wrap = document.getElementById('overviewTables');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>wrap.innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var order = BRANCHES[CURRENT_BRANCH].order;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>months.forEach(function(month){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var mId = idSafe(month);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var html = '';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;div&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;div class="month-title"&gt;'+month+'&lt;/div&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;table&gt;&lt;thead&gt;&lt;tr&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;th&gt;&lt;/th&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>order.forEach(function(k){ html += '&lt;th&gt;'+classLabels[k]+'&lt;/th&gt;'; });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;th&gt;Total&lt;/th&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;tr&gt;&lt;td&gt;Present&lt;/td&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>order.forEach(function(k){ html += '&lt;td id="present-'+k+'-'+mId+'"&gt;0&lt;/td&gt;'; });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;td id="present-Total-'+mId+'"&gt;0&lt;/td&gt;&lt;/tr&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;tr&gt;&lt;td&gt;Absent&lt;/td&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>order.forEach(function(k){ html += '&lt;td id="absent-'+k+'-'+mId+'"&gt;0&lt;/td&gt;'; });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;td id="absent-Total-'+mId+'"&gt;0&lt;/td&gt;&lt;/tr&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;tr&gt;&lt;td&gt;Fees&lt;/td&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>order.forEach(function(k){ html += '&lt;td id="fees-'+k+'-'+mId+'"&gt;0&lt;/td&gt;'; });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;td id="fees-Total-'+mId+'"&gt;0&lt;/td&gt;&lt;/tr&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var node = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>node.innerHTML = html;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>wrap.appendChild(node.firstChild);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>recomputeOverviewFromStore();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>var TYPE_OPTIONS = ["", "New", "Renewal", "Revival", "Carry-Forward", "Shift in Carry-Forward"];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function renderUIForBranch(){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var tabsEl = document.querySelector('.tabs');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var order = BRANCHES[CURRENT_BRANCH].order;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var tabsHtml = ['overview'].concat(order).map(function(id){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var label = id==='overview' ? 'Overview' : classLabels[id];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return '&lt;button class="tab-btn'+(id==='overview'?' active':'')+'" data-tab="'+id+'"&gt;'+label+'&lt;/button&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}).join('');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tabsEl.innerHTML = tabsHtml;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>var panels = document.getElementById('panels');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var phtml = '&lt;section id="overview" class="panel active"&gt;&lt;div class="grid"&gt;&lt;div id="overviewTables"&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>order.forEach(function(k){ phtml += '&lt;section id="'+k+'" class="panel"&gt;&lt;/section&gt;'; });</p>
+<p class="p1"><span class="Apple-converted-space">      </span>panels.innerHTML = phtml;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.querySelector('.tabs').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.querySelector('.sync-bar').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('panels').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('topbar').classList.add('show');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('branchTag').textContent = '— ' + CURRENT_BRANCH + ' Branch';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>buildOverviewTables();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>order.forEach(buildClassPanel);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>tabsEl.addEventListener('click', function(e){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var btn = e.target.closest ? e.target.closest('.tab-btn') : null;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(!btn) return;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var toId = btn.getAttribute('data-tab');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>forEachNode(document.querySelectorAll('.tab-btn'), function(b){ b.classList.toggle('active', b===btn); });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>forEachNode(document.querySelectorAll('.panel'), function(p){ p.classList.toggle('active', p.id===toId); });</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function validTillLabelSeq(startMonthIdx, startYear){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var items = [];</p>
+<p class="p1"><span class="Apple-converted-space">      </span>for(var i=0;i&lt;12;i++){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var mIdx = (startMonthIdx + i) % 12;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var y = startYear + Math.floor((startMonthIdx + i)/12);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>items.push({mIdx:mIdx, y:y});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var firstY = items[0].y, lastY = items[items.length-1].y;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var sameYear = firstY === lastY;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return items.map(function(it){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var short = new Date(it.y, it.mIdx, 1).toLocaleString('en-US',{month:'short'});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return {value:(it.y+'-'+(it.mIdx+1)), label: (sameYear ? short : (short+' '+it.y))};</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function getDaysInMonthByWeekdays(monthIndex, year, allowedDays){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var days = [];</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var d = new Date(year, monthIndex, 1);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>while(d.getMonth() === monthIndex){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(allowedDays.indexOf(d.getDay()) !== -1){</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var label = d.getDate() + '/' + (d.getMonth()+1);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>days.push({date: new Date(d), label: label});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>d.setDate(d.getDate()+1);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return days;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function refreshValidTillOptionsFor(classKey, monthIndex, year){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var table = document.getElementById('classTable-'+classKey);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(!table) return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var options = validTillLabelSeq(monthIndex, year);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var selects = table.querySelectorAll('select.validTill');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>forEachNode(selects, function(sel){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var current = sel.value;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>sel.innerHTML = '&lt;option value=""&gt;&lt;/option&gt;' + options.map(function(o){ return '&lt;option value="'+o.value+'"&gt;'+o.label+'&lt;/option&gt;'; }).join('');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(current) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var opt = sel.querySelector('option[value="'+current+'"]');</p>
+<p class="p1"><span class="Apple-converted-space">          </span>sel.value = opt ? current : '';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function buildClassPanel(classKey){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var cfg = CLASS_CONFIGS[classKey];</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var panel = document.getElementById(classKey);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var monthOptions = months.map(function(m){ return '&lt;option&gt;'+m+'&lt;/option&gt;'; }).join('');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>panel.innerHTML = ''</p>
+<p class="p1"><span class="Apple-converted-space">        </span>+ '&lt;div class="controls"&gt;'</p>
+<p class="p1"><span class="Apple-converted-space">        </span>+ '&lt;label&gt;&lt;strong&gt;'+cfg.label+'&lt;/strong&gt;&lt;/label&gt;'</p>
+<p class="p1"><span class="Apple-converted-space">        </span>+ '&lt;label&gt;Month: &lt;select id="monthSelect-'+classKey+'"&gt;'+monthOptions+'&lt;/select&gt;&lt;/label&gt;'</p>
+<p class="p1"><span class="Apple-converted-space">        </span>+ '&lt;label&gt;&lt;input type="checkbox" id="collapseToggle-'+classKey+'" /&gt; Collapse attendance&lt;/label&gt;'</p>
+<p class="p1"><span class="Apple-converted-space">        </span>+ '&lt;/div&gt;'</p>
+<p class="p1"><span class="Apple-converted-space">        </span>+ '&lt;div id="classTableContainer-'+classKey+'"&gt;&lt;/div&gt;';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>var select = document.getElementById('monthSelect-'+classKey);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var selMap = getBranchSelectedMonths();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(selMap &amp;&amp; selMap[classKey]){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var saved = selMap[classKey];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var has = Array.prototype.some.call(select.options, function(o){ return o.value===saved; });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(has) select.value = saved;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>select.addEventListener('change', function(){ generateClassTable(classKey); saveCurrentClassState(classKey); });</p>
+<p class="p1"><span class="Apple-converted-space">      </span>generateClassTable(classKey);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>var collapseToggle = document.getElementById('collapseToggle-'+classKey);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (collapseToggle) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var pref = !!getCollapsePrefs()[classKey];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>collapseToggle.checked = pref;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var tbl0 = document.getElementById('classTable-'+classKey);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (tbl0 &amp;&amp; pref) tbl0.classList.add('collapsed');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>collapseToggle.addEventListener('change', function(e){</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var tbl = document.getElementById('classTable-'+classKey);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if (tbl) tbl.classList.toggle('collapsed', e.target.checked);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var c = getCollapsePrefs(); c[classKey] = e.target.checked; persist();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function generateClassTable(classKey){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var cfg = CLASS_CONFIGS[classKey];</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var monthStr = document.getElementById('monthSelect-'+classKey).value;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var parts = monthStr.split(' ');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var monthName = parts[0], yearStr = parts[1];</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var year = parseInt(yearStr,10);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var monthIndex = new Date(monthName+' 1, '+year).getMonth();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var days = getDaysInMonthByWeekdays(monthIndex, year, cfg.allowedDays);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>var html = '&lt;table id="classTable-'+classKey+'"&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>html += '&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Student Name&lt;/th&gt;&lt;th&gt;Phone No.&lt;/th&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>days.forEach(function(d){ html += '&lt;th class="day-col"&gt;'+d.label+'&lt;/th&gt;'; });</p>
+<p class="p1"><span class="Apple-converted-space">      </span>html += '&lt;th&gt;Fees Paid&lt;/th&gt;&lt;th&gt;Type&lt;/th&gt;&lt;th&gt;Valid Till&lt;/th&gt;&lt;th&gt;Notes&lt;/th&gt;&lt;/tr&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>html += '&lt;tr class="day-row"&gt;&lt;th&gt;&lt;/th&gt;&lt;th&gt;&lt;/th&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>days.forEach(function(d){ html += '&lt;th class="day-col"&gt;'+['SUN','MON','TUE','WED','THU','FRI','SAT'][d.date.getDay()]+'&lt;/th&gt;'; });</p>
+<p class="p1"><span class="Apple-converted-space">      </span>html += '&lt;th&gt;&lt;/th&gt;&lt;th&gt;&lt;/th&gt;&lt;th&gt;&lt;/th&gt;&lt;th&gt;&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>for(var r=1; r&lt;=15; r++){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;tr&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;td&gt;&lt;input type="text" placeholder="Student '+r+'"&gt;&lt;/td&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;td&gt;&lt;input type="text" class="phone" placeholder="" /&gt;&lt;/td&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>days.forEach(function(){ html += '&lt;td class="day-col"&gt;&lt;select&gt;&lt;option value=""&gt; &lt;/option&gt;&lt;option value="Present"&gt;Present&lt;/option&gt;&lt;option value="Absent"&gt;Absent&lt;/option&gt;&lt;option value="Drop-in"&gt;Drop-in&lt;/option&gt;&lt;/select&gt;&lt;/td&gt;'; });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;td&gt;&lt;input type="text" class="fee" placeholder="" /&gt;&lt;/td&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;td&gt;&lt;select class="type"&gt;'+ TYPE_OPTIONS.map(function(opt){ return '&lt;option value="'+opt+'"&gt;'+opt+'&lt;/option&gt;'; }).join('') +'&lt;/select&gt;&lt;/td&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;td&gt;&lt;select class="validTill"&gt;&lt;option value=""&gt;&lt;/option&gt;&lt;/select&gt;&lt;/td&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;td&gt;&lt;input type="text" class="notes" placeholder=""/&gt;&lt;/td&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += '&lt;/tr&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>/* Footer with explicit cells instead of colspan for perfect alignment on mobile */</p>
+<p class="p1"><span class="Apple-converted-space">      </span>html += '&lt;tfoot&gt;&lt;tr&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>html += '&lt;td class="tf-lbl"&gt;&lt;strong&gt;Total Fees&lt;/strong&gt;&lt;/td&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>html += '&lt;td&gt;&lt;/td&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>days.forEach(function(){ html += '&lt;td class="day-col"&gt;&lt;/td&gt;'; });</p>
+<p class="p1"><span class="Apple-converted-space">      </span>html += '&lt;td id="classTotal-'+classKey+'" class="tf-fees"&gt;0&lt;/td&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>html += '&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>html += '&lt;/tr&gt;&lt;/tfoot&gt;&lt;/table&gt;';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>var container = document.getElementById('classTableContainer-'+classKey);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>container.innerHTML = html;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>var tblApply = document.getElementById('classTable-'+classKey);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (getCollapsePrefs()[classKey]) tblApply.classList.add('collapsed');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>forEachNode(container.querySelectorAll('input.phone'), attachPhoneValidation);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>forEachNode(container.querySelectorAll('input[type="text"], select'), function(elm){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>elm.addEventListener('change', function(){ updateClassTotals(classKey); saveCurrentClassState(classKey); if(elm.classList.contains('notes')) autosizeInput(elm); });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>elm.addEventListener('input', function(){ updateClassTotals(classKey); saveCurrentClassState(classKey); if(elm.classList.contains('notes')) autosizeInput(elm); });</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>refreshValidTillOptionsFor(classKey, monthIndex, year);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>restoreClassTable(classKey);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>autosizeAllNotes(container);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>updateClassTotals(classKey);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function updateClassTotals(classKey){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var table = document.getElementById('classTable-'+classKey);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(!table) return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var month = document.getElementById('monthSelect-'+classKey).value;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var mId = idSafe(month);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>var present = 0, absent = 0, feesTotal = 0;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>forEachNode(table.querySelectorAll('tbody tr'), function(row){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var feeRaw = (row.querySelector('input.fee') &amp;&amp; row.querySelector('input.fee').value) || '';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var feeVal = sanitizeNumber(feeRaw);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>feesTotal += feeVal;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>forEachNode(row.querySelectorAll('select:not(.type):not(.validTill)'), function(sel){</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var v = sel.value;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if(v === 'Present' || v === 'Drop-in'){ present++; }</p>
+<p class="p1"><span class="Apple-converted-space">          </span>else if(v === 'Absent'){ absent++; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>var classTotalCell = document.getElementById('classTotal-'+classKey);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(classTotalCell) classTotalCell.textContent = feesTotal;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>var pCell = document.getElementById('present-'+classKey+'-'+mId);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var aCell = document.getElementById('absent-'+classKey+'-'+mId);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var fCell = document.getElementById('fees-'+classKey+'-'+mId);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(pCell) pCell.textContent = present;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(aCell) aCell.textContent = absent;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(fCell) fCell.textContent = feesTotal;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>updateOverviewTotalsForMonth(month);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function updateOverviewTotalsForMonth(month){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var mId = idSafe(month);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var order = BRANCHES[CURRENT_BRANCH].order;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>['present','absent','fees'].forEach(function(type){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var sum = order.reduce(function(acc,k){</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var cell = document.getElementById(type+'-'+k+'-'+mId);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>return acc + (parseFloat(cell ? cell.textContent : '0') || 0);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>},0);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var totalCell = document.getElementById(type+'-Total-'+mId);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(totalCell) totalCell.textContent = sum;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function restoreClassTable(classKey){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var table = document.getElementById('classTable-'+classKey);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var month = document.getElementById('monthSelect-'+classKey).value;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var mId = idSafe(month);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var bd = getBranchData();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var rows = (bd[classKey] &amp;&amp; bd[classKey][mId]) || [];</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(!table || rows.length===0) return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var bodyRows = Array.prototype.slice.call(table.querySelectorAll('tbody tr'));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>bodyRows.forEach(function(tr, idx){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var data = rows[idx]; if(!data) return;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var tds = Array.prototype.slice.call(tr.children);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(tds[0]) tds[0].querySelector('input').value = (data.name!=null?data.name:'');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(tds[1]) tds[1].querySelector('input').value = (data.phone!=null?data.phone:'');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var dayCells = tds.slice(2, -4);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>for(var i=0;i&lt;dayCells.length;i++){</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var sel = dayCells[i].querySelector('select');</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if(!sel) continue;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var val = (data.days &amp;&amp; data.days[i]) || '';</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var has = Array.prototype.some.call(sel.options, function(o){ return o.value===val; });</p>
+<p class="p1"><span class="Apple-converted-space">          </span>sel.value = has ? val : '';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>tds[tds.length-4].querySelector('input').value = (data.fee!=null?data.fee:'');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>tds[tds.length-3].querySelector('select').value = (data.type!=null?data.type:'');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>tds[tds.length-2].querySelector('select').value = (data.validTill!=null?data.validTill:'');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var notesEl = tds[tds.length-1].querySelector('input.notes');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(notesEl){ notesEl.value = (data.notes!=null?data.notes:''); autosizeInput(notesEl); }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function saveCurrentClassState(classKey){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var table = document.getElementById('classTable-'+classKey);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var month = document.getElementById('monthSelect-'+classKey).value;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var mId = idSafe(month);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(!table) return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var rows = [];</p>
+<p class="p1"><span class="Apple-converted-space">      </span>forEachNode(table.querySelectorAll('tbody tr'), function(tr){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var tds = Array.prototype.slice.call(tr.children);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var name = (tds[0].querySelector('input') &amp;&amp; tds[0].querySelector('input').value) || '';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var phone = (tds[1].querySelector('input') &amp;&amp; tds[1].querySelector('input').value) || '';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var daySelects = tds.slice(2, -4).map(function(td){ return td.querySelector('select'); });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var days = daySelects.map(function(sel){ return sel ? sel.value : ''; });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var fee = (tds[tds.length-4].querySelector('input') &amp;&amp; tds[tds.length-4].querySelector('input').value) || '';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var type = (tds[tds.length-3].querySelector('select') &amp;&amp; tds[tds.length-3].querySelector('select').value) || '';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var validTill = (tds[tds.length-2].querySelector('select') &amp;&amp; tds[tds.length-2].querySelector('select').value) || '';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var notes = (tds[tds.length-1].querySelector('input.notes') &amp;&amp; tds[tds.length-1].querySelector('input.notes').value) || '';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>rows.push({name:name, phone:phone, days:days, fee:fee, type:type, validTill:validTill, notes:notes});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var branchData = getBranchData();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ensure(branchData,classKey,{}); branchData[classKey][mId] = rows;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var sel = getBranchSelectedMonths(); sel[classKey] = month;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>bumpMeta(); persist(); recomputeOverviewFromStore(); dirtySince = STORE.meta.updatedAt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function setBranch(branch){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>CURRENT_BRANCH = branch;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>classLabels = {};</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var labels = BRANCHES[branch].labels;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>for(var k in labels){ if(Object.prototype.hasOwnProperty.call(labels,k)) classLabels[k]=labels[k]; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>CLASS_CONFIGS = {};</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var cfgs = BRANCHES[branch].configs;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>for(var ck in cfgs){ if(Object.prototype.hasOwnProperty.call(cfgs,ck)) CLASS_CONFIGS[ck] = { label: classLabels[ck], allowedDays: cfgs[ck].allowedDays.slice() }; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('branchGate').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>renderUIForBranch();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function goBackToBranches(){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>CURRENT_BRANCH = null;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('branchGate').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.querySelector('.tabs').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.querySelector('.sync-bar').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('panels').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('topbar').classList.remove('show');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.querySelector('.tabs').innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('panels').innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('branchTag').textContent = '';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function applyStoreToUI(){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(!CURRENT_BRANCH) return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>renderUIForBranch();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>recomputeOverviewFromStore();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function attachPhoneValidation(input){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>input.classList.add('phone');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>input.setAttribute('inputmode','numeric');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>input.addEventListener('input', function(){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var digits = input.value.replace(/\D/g,'').slice(0,10);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>input.value = digits;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(digits.length===0){ input.classList.remove('invalid'); return; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(digits.length!==10){ input.classList.add('invalid'); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>else { input.classList.remove('invalid'); }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>input.addEventListener('blur', function(){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var digits = input.value.replace(/\D/g,'');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(digits.length!==0 &amp;&amp; digits.length!==10){ input.classList.add('invalid'); }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function recomputeOverviewFromStore(){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(!CURRENT_BRANCH) return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var bd = getBranchData();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var order = BRANCHES[CURRENT_BRANCH].order;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>months.forEach(function(month){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var mId = idSafe(month);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var present=0, absent=0, fees=0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>for(var oi=0; oi&lt;order.length; oi++){</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var classKey = order[oi];</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var rows = (bd[classKey] &amp;&amp; bd[classKey][mId]) || [];</p>
+<p class="p1"><span class="Apple-converted-space">          </span>rows.forEach(function(r){</p>
+<p class="p1"><span class="Apple-converted-space">            </span>(r.days||[]).forEach(function(v){ if(v==='Present'||v==='Drop-in') present++; else if(v==='Absent') absent++; });</p>
+<p class="p1"><span class="Apple-converted-space">            </span>fees += sanitizeNumber(r.fee||0);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>});</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var pCell = document.getElementById('present-'+classKey+'-'+mId);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var aCell = document.getElementById('absent-'+classKey+'-'+mId);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>var fCell = document.getElementById('fees-'+classKey+'-'+mId);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if(pCell) pCell.textContent = rows.reduce(function(acc,r){ return acc + (r.days||[]).filter(function(v){ return v==='Present'||v==='Drop-in'; }).length; }, 0);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if(aCell) aCell.textContent = rows.reduce(function(acc,r){ return acc + (r.days||[]).filter(function(v){ return v==='Absent'; }).length; }, 0);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if(fCell) fCell.textContent = rows.reduce(function(acc,r){ return acc + sanitizeNumber(r.fee||0); }, 0);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var tP = document.getElementById('present-Total-'+mId);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var tA = document.getElementById('absent-Total-'+mId);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var tF = document.getElementById('fees-Total-'+mId);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(tP) tP.textContent = present;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(tA) tA.textContent = absent;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(tF) tF.textContent = fees;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function bindStaticUI(){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>forEachNode(document.querySelectorAll('button[data-branch]'), function(btn){</p>
+<p class="p1"><span class="Apple-converted-space">        </span>btn.addEventListener('click', function(){ setBranch(btn.getAttribute('data-branch')); });</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>var back = document.getElementById('backBtn');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(back) back.addEventListener('click', goBackToBranches);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>bindStaticUI();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>bindSyncUI();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setupAutoSync();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.addEventListener('visibilitychange', function(){ if(!document.hidden) smartSync(); });</p>
+<p class="p1"><span class="Apple-converted-space">  </span>})();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
